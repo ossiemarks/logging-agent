@@ -1,0 +1,23 @@
+---
+
+- name: find host_name
+  gather_facts:
+
+- name: Copy file with owner and permissions
+  copy:
+    src: wazuh-agent-3.7.2-1.el5.x86_64.rpm
+    dest: /tmp/wazuh-agent-3.7.2-1.el5.x86_64.rpm
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: install RPM
+  yum:
+    name: /tmp/wazuh-agent-3.7.2-1.el5.x86_64.rpm
+    state: present
+  
+- name: install the agent key based on server name
+  debug:
+    msg: "server name {{ item.key }} is {{ item.value.server_name }} {{ item.value.key }}"
+  loop: "{ server_name: sp2tx01.us1.cx100, server_key: MDE5IHNwMnR4MDEudXMxLmN4MTAwIDE3Mi4xNi4xLjIwIDEzOGQ4YzYyMmZmMDA2OWY4NTdkNjg4ZjgwYWQ0OTg4OGM2MjNhM2YyZjc3NWU3MGNkYmVlZGVjNzA4NTdmODA=, server_name: influxdb01.us1.cx100,server_key: MDIwIGluZmx1eGRiMDEudXMxLmN4MTAwIDE3Mi4xNi4xLjE0MCA2MGJiNmRiZjFjM2Y3MTk5MWRhYzQ5NmUwNTgxYzYwNDRjMDBiZTFkNTc0ZGEzYTBkOGRmMjc2M2U4NjMwYmI3, server_name: reportingdb01.us1.cx100, server_key: MDIxIHJlcG9ydGluZ2RiMDEudXMxLmN4MTAwIDE3Mi4xNi4xLjQ2IDAwNjk2MGI0NDU5NDNlNzJlZDg4MmE2OTM1NTBkZTUwYmNjNDU1MTVjNjY5OGMzMjJjOTkyZDI0ZDczNzAxMjA=, server_name: elasticsearch.us1.cx100, server_key: MDIyIGVsYXN0aWNzZWFyY2gudXMxLmN4MTAwIDE3Mi4xNi4xLjIxIDlmMjg1ODYwZmFiYjRlZGY0MmI5ZWM5NzE5NTBjNGRiYjMzMTMyNTgzZWZkMDVjY2ZiNTY0ZWY0MWQ0MzZhNmE=}"
+
